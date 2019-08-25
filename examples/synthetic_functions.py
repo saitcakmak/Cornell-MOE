@@ -6,6 +6,7 @@ import numpy
 from numpy import abs, cos, exp, mean, pi, prod, sin, sqrt, sum
 import math
 
+
 class Branin(object):
     def __init__(self):
         self._dim = 2
@@ -13,7 +14,7 @@ class Branin(object):
         self._num_init_pts = 3
         self._sample_var = 0.0
         self._min_value = 0.397887
-        self._observations = []#numpy.arange(self._dim)
+        self._observations = []  #numpy.arange(self._dim)
         self._num_fidelity = 0
 
     def evaluate_true(self, x):
@@ -34,6 +35,7 @@ class Branin(object):
 
     def evaluate(self, x):
         return self.evaluate_true(x)
+
 
 class Rosenbrock(object):
     def __init__(self):
@@ -61,6 +63,7 @@ class Rosenbrock(object):
 
     def evaluate(self, x):
         return self.evaluate_true(x)
+
 
 class Hartmann3(object):
     def __init__(self):
@@ -95,6 +98,7 @@ class Hartmann3(object):
         t = self.evaluate_true(x)
         return t
 
+
 class Levy4(object):
     def __init__(self):
         self._dim = 4
@@ -128,10 +132,10 @@ class Levy4(object):
                           + 2 * (z[:-1]-1) * (0.25) * (1 + 10. * sin(pi * z[:-1] + 1)**2 ))
         return numpy.array(results)
 
-
     def evaluate(self, x):
         t = self.evaluate_true(x)
         return t
+
 
 class Hartmann6(object):
     def __init__(self):
@@ -166,6 +170,7 @@ class Hartmann6(object):
 
     def evaluate(self, x):
         return self.evaluate_true(x)
+
 
 class Ackley(object):
     def __init__(self):

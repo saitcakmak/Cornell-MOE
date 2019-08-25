@@ -191,13 +191,13 @@ for n in range(num_iteration):
         sys.exit(0)
 
     print(method + " takes "+str((time.time()-time1))+" seconds")
-    #time1 = time.time()
+    time1 = time.time()
     print(method + " suggests points:")
     print(next_points)
 
     sampled_points = [SamplePoint(pt, objective_func.evaluate(pt)[observations], objective_func._sample_var) for pt in next_points]
 
-    #print "evaluating takes "+str((time.time()-time1)/60)+" mins"
+    print("evaluating takes "+str((time.time()-time1)/60)+" mins")
     capitals = np.ones(num_to_sample)
     for i in range(num_to_sample):
         if num_fidelity > 0:
@@ -206,7 +206,7 @@ for n in range(num_iteration):
                 value *= next_points[i, dim-1-j]
             capitals[i] = value
     capital_so_far += np.amax(capitals)
-    print("evaluating takes capital " + str(capital_so_far) +" so far")
+    print("evaluating takes capital " + str(capital_so_far) + " so far")
 
     # retrain the model
     time1 = time.time()
