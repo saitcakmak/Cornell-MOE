@@ -64,10 +64,10 @@ objective_func_list = [obj_func_dict["Branin"], obj_func_dict["Rosenbrock"], obj
 dim = [int(objective_func._dim) for objective_func in objective_func_list]
 num_initial_points = [int(objective_func._num_init_pts) for objective_func in objective_func_list]
 
-num_fidelity = []
-inner_search_domain = []
-cpp_search_domain = []
-cpp_inner_search_domain = []
+num_fidelity = [0, 0, 0, 0]
+inner_search_domain = [0, 0, 0, 0]
+cpp_search_domain = [0, 0, 0, 0]
+cpp_inner_search_domain = [0, 0, 0, 0]
 for i in range(4):
     objective_func = objective_func_list[i]
     num_fidelity[i] = objective_func._num_fidelity
@@ -77,12 +77,12 @@ for i in range(4):
     cpp_inner_search_domain = cppTensorProductDomain([ClosedInterval(objective_func._search_domain[i, 0], objective_func._search_domain[i, 1])
                                 for i in range(objective_func._search_domain.shape[0] - num_fidelity[i])])
 
-init_pts = []
-derivatives = []
-observations = []
-init_pts_value = []
-true_value_init = []
-init_data = []
+init_pts = [0, 0, 0, 0]
+derivatives = [0, 0, 0, 0]
+observations = [0, 0, 0, 0]
+init_pts_value = [0, 0, 0, 0]
+true_value_init = [0, 0, 0, 0]
+init_data = [0, 0, 0, 0]
 for i in range(4):
     objective_func = objective_func_list[i]
     # get the initial data
@@ -104,8 +104,8 @@ for i in range(4):
     init_data[i].append_sample_points([SamplePoint(pt, [init_pts_value[i][num, j] for j in observations[i]],
                                                    objective_func._sample_var) for num, pt in enumerate(init_pts[i])])
 
-prior = []
-cpp_gp_loglikelihood = []
+prior = [0, 0, 0, 0]
+cpp_gp_loglikelihood = [0, 0, 0, 0]
 for i in range(4):
     # initialize the model
     prior[i] = DefaultPrior(1 + dim[i] + len(observations[i]), len(observations[i]))
@@ -146,12 +146,12 @@ cpp_sgd_params_kg = cppGradientDescentParameters(num_multistarts=200,
                                                  max_relative_change=0.5,
                                                  tolerance=1.0e-10)
 
-eval_pts = []
-test = []
-ps = []
-py_repeated_search_domain = []
-ps_mean_opt = []
-report_point = []
+eval_pts = [0, 0, 0, 0]
+test = [0, 0, 0, 0]
+ps = [0, 0, 0, 0]
+py_repeated_search_domain = [0, 0, 0, 0]
+ps_mean_opt = [0, 0, 0, 0]
+report_point = [0, 0, 0, 0]
 for i in range(4):
     objective_func = objective_func_list[i]
     # minimum of the mean surface
@@ -176,17 +176,16 @@ for i in range(4):
     report_point[i] = report_point[i].ravel()
     report_point[i] = np.concatenate((report_point[i], np.ones(objective_func._num_fidelity)))
 
-current_best = []
+current_best = [0, 0, 0, 0]
 best_point = report_point
 for i in range(4):
     current_best[i] = true_value_init[i][np.argmin(true_value_init[i][:, 0])][0]
     print("obj ", i, " best so far in the initial data {0}".format(current_best[i]))
     print("obj ", i, "report point value", objective_func_list[i].evaluate_true(report_point[i])[0])
 capital_so_far = 0.
-# TODO: Edit the loop. Start with KG calculation for all, then ask the user to pick one. Sample the picked one and
-#  update KG. At each iteration, report the current best for each and the KG.
-next_points = []
-voi = []
+
+next_points = [0, 0, 0, 0]
+voi = [0, 0, 0, 0]
 for i in range(4):
     objective_func = objective_func_list[i]
     # KG
