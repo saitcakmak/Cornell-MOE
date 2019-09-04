@@ -74,7 +74,7 @@ for i in range(4):
     inner_search_domain[i] = pythonTensorProductDomain([ClosedInterval(objective_func._search_domain[i, 0], objective_func._search_domain[i, 1])
                                    for i in range(objective_func._search_domain.shape[0] - num_fidelity[i])])
     cpp_search_domain[i] = cppTensorProductDomain([ClosedInterval(bound[0], bound[1]) for bound in objective_func._search_domain])
-    cpp_inner_search_domain = cppTensorProductDomain([ClosedInterval(objective_func._search_domain[i, 0], objective_func._search_domain[i, 1])
+    cpp_inner_search_domain[i] = cppTensorProductDomain([ClosedInterval(objective_func._search_domain[i, 0], objective_func._search_domain[i, 1])
                                 for i in range(objective_func._search_domain.shape[0] - num_fidelity[i])])
 
 init_pts = [0, 0, 0, 0]
