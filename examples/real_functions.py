@@ -13,12 +13,15 @@ import tensorflow as tf
 from keras.datasets import cifar10
 
 from oct2py import octave
+
 octave.addpath(octave.genpath("gpml-matlab-v4.0-2016-10-19"))
+
 
 def run_in_separate_process(method, args):
     def queue_wrapper(q, params):
         r = method(*params)
         q.put(r)
+
     q = Queue()
     p = Process(target=queue_wrapper, args=(q, args))
     p.start()
@@ -27,6 +30,7 @@ def run_in_separate_process(method, args):
     if type(return_val) is Exception:
         raise return_val
     return return_val
+
 
 class CIFAR10(object):
     def __init__(self):
@@ -115,16 +119,16 @@ class CIFAR10(object):
                     print('Using real-time data augmentation.')
                     # This will do preprocessing and realtime data augmentation:
                     datagen = ImageDataGenerator(
-                            featurewise_center=False,  # set input mean to 0 over the dataset
-                            samplewise_center=False,  # set each sample mean to 0
-                            featurewise_std_normalization=False,  # divide inputs by std of the dataset
-                            samplewise_std_normalization=False,  # divide each input by its std
-                            zca_whitening=False,  # apply ZCA whitening
-                            rotation_range=0.,  # randomly rotate images in the range (degrees, 0 to 180)
-                            width_shift_range=0.1,  # randomly shift images horizontally (fraction of total width)
-                            height_shift_range=0.1,  # randomly shift images vertically (fraction of total height)
-                            horizontal_flip=True,  # randomly flip images
-                            vertical_flip=False)  # randomly flip images
+                        featurewise_center=False,  # set input mean to 0 over the dataset
+                        samplewise_center=False,  # set each sample mean to 0
+                        featurewise_std_normalization=False,  # divide inputs by std of the dataset
+                        samplewise_std_normalization=False,  # divide each input by its std
+                        zca_whitening=False,  # apply ZCA whitening
+                        rotation_range=0.,  # randomly rotate images in the range (degrees, 0 to 180)
+                        width_shift_range=0.1,  # randomly shift images horizontally (fraction of total width)
+                        height_shift_range=0.1,  # randomly shift images vertically (fraction of total height)
+                        horizontal_flip=True,  # randomly flip images
+                        vertical_flip=False)  # randomly flip images
 
                     # Compute quantities required for feature-wise normalization
                     # (std, mean, and principal components if ZCA whitening is applied).
@@ -137,14 +141,13 @@ class CIFAR10(object):
                                         epochs=epochs,
                                         validation_data=None)
 
-
                 # Evaluate model with test data set and share sample prediction results
                 evaluation = model.evaluate_generator(datagen.flow(x_test, y_test,
                                                                    batch_size=batch_size),
                                                       steps=x_test.shape[0] // batch_size)
 
                 print('Model Accuracy = %.2f' % (evaluation[1]))
-                return 1-evaluation[1]
+                return 1 - evaluation[1]
         except Exception as e:
             return e
 
@@ -157,6 +160,7 @@ class CIFAR10(object):
 
     def evaluate(self, x):
         return self.evaluate_true(x)
+
 
 class KISSGP(object):
     def __init__(self):

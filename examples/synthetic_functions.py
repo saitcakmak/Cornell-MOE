@@ -14,7 +14,7 @@ class Branin(object):
         self._num_init_pts = 3
         self._sample_var = 0.0
         self._min_value = 0.397887
-        self._observations = []  #numpy.arange(self._dim)
+        self._observations = []  # numpy.arange(self._dim)
         self._num_fidelity = 0
 
     def evaluate_true(self, x):
@@ -29,9 +29,11 @@ class Branin(object):
         r = 6
         s = 10
         t = old_div(1, (8 * numpy.pi))
-        return numpy.array([(a * pow(x[1] - b * pow(x[0], 2.0) + c * x[0] - r, 2.0) + s * (1 - t) * numpy.cos(x[0]) + s),
-                (2*a*(x[1] - b * pow(x[0], 2.0) + c * x[0] - r) * (-2* b * x[0] + c) + s * (1 - t) * (-numpy.sin(x[0]))),
-                (2*a*(x[1] - b * pow(x[0], 2.0) + c * x[0] - r))])
+        return numpy.array(
+            [(a * pow(x[1] - b * pow(x[0], 2.0) + c * x[0] - r, 2.0) + s * (1 - t) * numpy.cos(x[0]) + s),
+             (2 * a * (x[1] - b * pow(x[0], 2.0) + c * x[0] - r) * (-2 * b * x[0] + c) + s * (1 - t) * (
+                 -numpy.sin(x[0]))),
+             (2 * a * (x[1] - b * pow(x[0], 2.0) + c * x[0] - r))])
 
     def evaluate(self, x):
         return self.evaluate_true(x)
@@ -53,12 +55,12 @@ class Rosenbrock(object):
             :param x[4]: 4-dimension numpy array
         """
         value = 0.0
-        for i in range(self._dim-1):
-            value += pow(1. - x[i], 2.0) + 100. * pow(x[i+1] - pow(x[i], 2.0), 2.0)
+        for i in range(self._dim - 1):
+            value += pow(1. - x[i], 2.0) + 100. * pow(x[i + 1] - pow(x[i], 2.0), 2.0)
         results = [value]
-        for i in range(self._dim-1):
-            results += [(2.*(x[i]-1) - 400.*x[i]*(x[i+1]-pow(x[i], 2.0)))]
-        results += [(200. * (x[self._dim-1]-pow(x[self._dim-2], 2.0)))]
+        for i in range(self._dim - 1):
+            results += [(2. * (x[i] - 1) - 400. * x[i] * (x[i + 1] - pow(x[i], 2.0)))]
+        results += [(200. * (x[self._dim - 1] - pow(x[self._dim - 2], 2.0)))]
         return numpy.array(results)
 
     def evaluate(self, x):
@@ -72,7 +74,7 @@ class Hartmann3(object):
         self._num_init_pts = 3
         self._sample_var = 0.0
         self._min_value = -3.86278
-        self._observations = []#numpy.arange(self._dim)
+        self._observations = []  # numpy.arange(self._dim)
         self._num_fidelity = 0
 
     def evaluate_true(self, x):
@@ -84,14 +86,14 @@ class Hartmann3(object):
         alpha = numpy.array([1.0, 1.2, 3.0, 3.2])
         A = numpy.array([[3., 10., 30.], [0.1, 10., 35.], [3., 10., 30.], [0.1, 10., 35.]])
         P = 1e-4 * numpy.array([[3689, 1170, 2673], [4699, 4387, 7470], [1091, 8732, 5547], [381, 5743, 8828]])
-        results = [0.0]*4
+        results = [0.0] * 4
         for i in range(4):
             inner_value = 0.0
             for j in range(self._dim):
                 inner_value -= A[i, j] * pow(x[j] - P[i, j], 2.0)
             results[0] -= alpha[i] * numpy.exp(inner_value)
-            for j in range(self._dim-self._num_fidelity):
-                results[j+1] -= (alpha[i] * numpy.exp(inner_value)) * ((-2) * A[i,j] * (x[j] - P[i, j]))
+            for j in range(self._dim - self._num_fidelity):
+                results[j + 1] -= (alpha[i] * numpy.exp(inner_value)) * ((-2) * A[i, j] * (x[j] - P[i, j]))
         return numpy.array(results)
 
     def evaluate(self, x):
@@ -106,7 +108,7 @@ class Levy4(object):
         self._num_init_pts = 3
         self._sample_var = 0.0
         self._min_value = 0.0
-        self._observations = []#numpy.arange(self._dim)
+        self._observations = []  # numpy.arange(self._dim)
         self._num_fidelity = 0
 
     def evaluate_true(self, x):
@@ -120,16 +122,16 @@ class Levy4(object):
         n = len(x)
         z = 1 + old_div((x - 1), 4)
 
-        results = [0] * (n+1)
-        results[0] = (sin( pi * z[0] )**2
-                      + sum( (z[:-1] - 1)**2 * (1 + 10 * sin( pi * z[:-1] + 1 )**2 ))
-                      +       (z[-1] - 1)**2 * (1 + sin( 2 * pi * z[-1] )**2 ))
+        results = [0] * (n + 1)
+        results[0] = (sin(pi * z[0]) ** 2
+                      + sum((z[:-1] - 1) ** 2 * (1 + 10 * sin(pi * z[:-1] + 1) ** 2))
+                      + (z[-1] - 1) ** 2 * (1 + sin(2 * pi * z[-1]) ** 2))
         results[1] = 2. * sin(pi * z[0]) * cos(pi * z[0]) * pi * (0.25)
-        results[n] = (((z[-1] - 1)**2) * (2. * sin(2 * pi * z[-1]) * cos(2. * pi * z[-1]) * 2. * pi *(0.25))
-                      + 2. * (z[-1]-1) * (0.25) * (1 + sin( 2. * pi * z[-1] )**2 ))
+        results[n] = (((z[-1] - 1) ** 2) * (2. * sin(2 * pi * z[-1]) * cos(2. * pi * z[-1]) * 2. * pi * (0.25))
+                      + 2. * (z[-1] - 1) * (0.25) * (1 + sin(2. * pi * z[-1]) ** 2))
 
-        results[1:-1] += (((z[:-1] - 1)**2) * (20. * sin(pi * z[:-1] + 1) * cos(pi * z[:-1] + 1) * pi *(0.25))
-                          + 2 * (z[:-1]-1) * (0.25) * (1 + 10. * sin(pi * z[:-1] + 1)**2 ))
+        results[1:-1] += (((z[:-1] - 1) ** 2) * (20. * sin(pi * z[:-1] + 1) * cos(pi * z[:-1] + 1) * pi * (0.25))
+                          + 2 * (z[:-1] - 1) * (0.25) * (1 + 10. * sin(pi * z[:-1] + 1) ** 2))
         return numpy.array(results)
 
     def evaluate(self, x):
@@ -144,7 +146,7 @@ class Hartmann6(object):
         self._num_init_pts = 3
         self._sample_var = 0.0
         self._min_value = -3.32237
-        self._observations = []#numpy.arange(self._dim)
+        self._observations = []  # numpy.arange(self._dim)
         self._num_fidelity = 0
 
     def evaluate_true(self, x):
@@ -158,14 +160,14 @@ class Hartmann6(object):
                          [17, 8, 0.05, 10, 0.1, 14]])
         P = 1.0e-4 * numpy.array([[1312, 1696, 5569, 124, 8283, 5886], [2329, 4135, 8307, 3736, 1004, 9991],
                                   [2348, 1451, 3522, 2883, 3047, 6650], [4047, 8828, 8732, 5743, 1091, 381]])
-        results = [0.0]*7
+        results = [0.0] * 7
         for i in range(4):
             inner_value = 0.0
-            for j in range(self._dim-self._num_fidelity):
+            for j in range(self._dim - self._num_fidelity):
                 inner_value -= A[i, j] * pow(x[j] - P[i, j], 2.0)
             results[0] -= alpha[i] * numpy.exp(inner_value)
-            for j in range(self._dim-self._num_fidelity):
-                results[j+1] -= (alpha[i] * numpy.exp(inner_value)) * ((-2) * A[i,j] * (x[j] - P[i, j]))
+            for j in range(self._dim - self._num_fidelity):
+                results[j + 1] -= (alpha[i] * numpy.exp(inner_value)) * ((-2) * A[i, j] * (x[j] - P[i, j]))
         return numpy.array(results)
 
     def evaluate(self, x):
@@ -183,17 +185,20 @@ class Ackley(object):
         self._num_fidelity = 0
 
     def evaluate_true(self, x):
-        x = 20*x
+        x = 20 * x
         firstSum = 0.0
         secondSum = 0.0
         for c in x:
-            firstSum += c**2.0
-            secondSum += math.cos(2.0*math.pi*c)
+            firstSum += c ** 2.0
+            secondSum += math.cos(2.0 * math.pi * c)
         n = float(len(x))
-        results=[old_div((-20.0*math.exp(-0.2*math.sqrt(old_div(firstSum,n))) - math.exp(old_div(secondSum,n)) + 20 + math.e),6.)]
+        results = [old_div(
+            (-20.0 * math.exp(-0.2 * math.sqrt(old_div(firstSum, n))) - math.exp(old_div(secondSum, n)) + 20 + math.e),
+            6.)]
         for i in range(int(n)):
-            results += [-20.0*math.exp(-0.2*math.sqrt(old_div(firstSum,n))) * (-0.2*(old_div(x[i],n))/(math.sqrt(old_div(firstSum,n)))) -
-                        math.exp(old_div(secondSum,n)) * (2.0*math.pi/n) * (-math.sin(2.0*math.pi*x[i]))]
+            results += [-20.0 * math.exp(-0.2 * math.sqrt(old_div(firstSum, n))) * (
+                        -0.2 * (old_div(x[i], n)) / (math.sqrt(old_div(firstSum, n)))) -
+                        math.exp(old_div(secondSum, n)) * (2.0 * math.pi / n) * (-math.sin(2.0 * math.pi * x[i]))]
 
         return numpy.array(results)
 
@@ -202,5 +207,5 @@ class Ackley(object):
         results = []
         for r in t:
             n = numpy.random.normal(0, numpy.sqrt(self._sample_var))
-            results += [r+n]
+            results += [r + n]
         return numpy.array(results)

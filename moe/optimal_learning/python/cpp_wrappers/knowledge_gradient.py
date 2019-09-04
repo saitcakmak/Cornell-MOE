@@ -89,6 +89,7 @@ def posterior_mean_optimization(
     # reform output to be a list of dim-dimensional points, dim = len(self.domain)
     return numpy.array(best_points_to_sample)
 
+
 class PosteriorMean(OptimizableInterface):
     def __init__(
             self,
@@ -121,7 +122,7 @@ class PosteriorMean(OptimizableInterface):
     @property
     def problem_size(self):
         """Return the number of independent parameters to optimize."""
-        return self.dim-self._num_fidelity
+        return self.dim - self._num_fidelity
 
     def get_current_point(self):
         """Get the current_point (array of float64 with shape (problem_size)) at which this object is evaluating the objective function, ``f(x)``."""
@@ -213,13 +214,14 @@ class PosteriorMean(OptimizableInterface):
             self._num_fidelity,
             cpp_utils.cppify(self._points_to_sample),
         )
-        return cpp_utils.uncppify(grad_kg, (1, self.dim-self._num_fidelity))
+        return cpp_utils.uncppify(grad_kg, (1, self.dim - self._num_fidelity))
 
     compute_grad_objective_function = compute_grad_posterior_mean
 
     def compute_hessian_objective_function(self, **kwargs):
         """We do not currently support computation of the (spatial) hessian of knowledge gradient."""
         raise NotImplementedError('Currently we cannot compute the hessian of knowledge gradient.')
+
 
 def multistart_knowledge_gradient_optimization(
         kg_optimizer,
@@ -306,8 +308,8 @@ def multistart_knowledge_gradient_optimization(
     # reform output to be a list of dim-dimensional points, dim = len(self.domain)
     return cpp_utils.uncppify(best_points_to_sample, (num_to_sample, kg_optimizer.objective_function.dim))
 
-class KnowledgeGradient(OptimizableInterface):
 
+class KnowledgeGradient(OptimizableInterface):
     r"""Implementation of knowledge gradient computation via C++ wrappers: EI and its gradient at specified point(s) sampled from a GaussianProcess.
 
     A class to encapsulate the computation of knowledge gradient and its spatial gradient using points sampled from an
@@ -358,7 +360,7 @@ class KnowledgeGradient(OptimizableInterface):
 
         self._discrete_pts = numpy.copy(discrete_pts)
 
-        full_points = numpy.zeros((discrete_pts.shape[0], discrete_pts.shape[1]+num_fidelity))
+        full_points = numpy.zeros((discrete_pts.shape[0], discrete_pts.shape[1] + num_fidelity))
         for i, point in enumerate(discrete_pts):
             full_points[i, :discrete_pts.shape[1]] = numpy.array(point)
             full_points[i, discrete_pts.shape[1]:] = 1.0
