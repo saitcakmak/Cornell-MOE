@@ -176,17 +176,18 @@ for i in range(4):
     report_point[i] = report_point[i].ravel()
     report_point[i] = np.concatenate((report_point[i], np.ones(objective_func._num_fidelity)))
 
+current_best = []
+best_point = report_point
 for i in range(4):
-    print("obj ", i, " best so far in the initial data {0}".format(true_value_init[i][np.argmin(true_value_init[i][:, 0])][0]))
+    current_best[i] = true_value_init[i][np.argmin(true_value_init[i][:, 0])][0]
+    print("obj ", i, " best so far in the initial data {0}".format(current_best[i]))
+    print("obj ", i, "report point value", objective_func_list[i].evaluate_true(report_point[i])[0])
 capital_so_far = 0.
 # TODO: Edit the loop. Start with KG calculation for all, then ask the user to pick one. Sample the picked one and
 #  update KG. At each iteration, report the current best for each and the KG.
 next_points = []
 voi = []
-current_best = report_point
-current_best_val = []
 for i in range(4):
-    # TODO: calculate KG for each
     objective_func = objective_func_list[i]
     # KG
     time1 = time.time()
@@ -238,19 +239,17 @@ for i in range(4):
     print(method + " takes " + str((time.time() - time1)) + " seconds for objective", i)
     print(method + " suggests points: ", next_points[i], " with voi: ", voi[i])
 
-condition = True
-while condition:
+while True:
     print(method + ", multiples, {0}th iteration".format(capital_so_far))
-
-    # TODO: report the current best and KG for all.
-    #  Ask user to pick the next sample.
-    #  Update the KG with the new sample.
 
     print("Suggested points: ", next_points)
     print("Corresponding voi: ", voi)
-    print("Current best: ")  # TODO: what is the current best?
+    print("Current best: ", current_best)
 
-    i = int(input("pick the next sample i = {1, 2, 3, 4} : "))
+    i = int(input("pick the next sample i = {1, 2, 3, 4} (or -1 to quit): "))
+    if i == -1:
+        break
+
     objective_func = objective_func_list[i]
 
     time1 = time.time()
@@ -302,9 +301,10 @@ while condition:
     print("The recommended point: ", end=' ')
     print(report_point)
     print("recommending the point takes " + str((time.time() - time1)) + " seconds")
-    print(method + ", VOI {0}, best so far {1}".format(voi, objective_func.evaluate_true(report_point)[0]))
+    best_point[i] = report_point
+    current_best[i] = objective_func.evaluate_true(report_point)[0]
+    print(method + ", VOI {0}, best so far {1}".format(voi, current_best[i]))
 
-    # TODO: this part is good
     time1 = time.time()
     # KG
     discrete_pts_list = []
