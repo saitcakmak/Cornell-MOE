@@ -30,7 +30,7 @@ from examples import synthetic_functions
 
 # arguments for calling this script:
 # python main.py [obj_func_name] [method_name] [num_to_sample] [run_len]
-# example: python main.py Branin KG 4 1
+# example: python main.py Branin KG 1 10
 # you can define your own obj_function and then just change the objective_func object below, and run this script.
 
 argv = sys.argv[1:]

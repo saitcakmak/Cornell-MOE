@@ -181,8 +181,8 @@ best_point = report_point
 for i in range(4):
     current_best[i] = true_value_init[i][np.argmin(true_value_init[i][:, 0])][0]
     print("obj ", i, " best so far in the initial data {0}".format(current_best[i]))
-    print("obj ", i, "report point value", objective_func_list[i].evaluate_true(report_point[i])[0])
-capital_so_far = 0.
+    # print("obj ", i, "report point value", objective_func_list[i].evaluate_true(report_point[i])[0])
+capital_so_far = 0
 
 next_points = [0, 0, 0, 0]
 voi = [0, 0, 0, 0]
@@ -241,11 +241,11 @@ for i in range(4):
 while True:
     print(method + ", multiples, {0}th iteration".format(capital_so_far))
 
-    print("Suggested points: ", next_points)
+    # print("Suggested points: ", next_points)
     print("Corresponding voi: ", voi)
     print("Current best: ", current_best)
 
-    i = int(input("pick the next sample i = {1, 2, 3, 4} (or -1 to quit): "))
+    i = int(input("pick the next sample i = {0, 1, 2, 3} (or -1 to quit): "))
     if i == -1:
         break
 
@@ -302,7 +302,7 @@ while True:
     print("recommending the point takes " + str((time.time() - time1)) + " seconds")
     best_point[i] = report_point
     current_best[i] = objective_func.evaluate_true(report_point)[0]
-    print(method + ", VOI {0}, best so far {1}".format(voi, current_best[i]))
+    print(method + ", VOI {0}, best so far {1}".format(voi[i], current_best[i]))
 
     time1 = time.time()
     # KG

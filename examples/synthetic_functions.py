@@ -176,7 +176,7 @@ class Hartmann6(object):
 
 class Ackley(object):
     def __init__(self):
-        self._dim = 5
+        self._dim = 50
         self._search_domain = numpy.repeat([[-1., 1.]], self._dim, axis=0)
         self._num_init_pts = 3
         self._sample_var = 0.0
