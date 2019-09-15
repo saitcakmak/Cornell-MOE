@@ -51,7 +51,7 @@ obj_func_dict = {'Branin': synthetic_functions.Branin(),
                  'Hartmann6': synthetic_functions.Hartmann6(),
                  'Ackley': synthetic_functions.Ackley()}
 
-objective_func = synthetic_functions.Ackley()
+objective_func = obj_func_dict[obj_func_name]
 dim = int(objective_func._dim)
 print("dim: ", dim)
 num_initial_points = int(objective_func._num_init_pts)
