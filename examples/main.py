@@ -53,6 +53,7 @@ obj_func_dict = {'Branin': synthetic_functions.Branin(),
 
 objective_func = obj_func_dict[obj_func_name]
 dim = int(objective_func._dim)
+print("dim: ", dim)
 num_initial_points = int(objective_func._num_init_pts)
 
 num_fidelity = objective_func._num_fidelity
