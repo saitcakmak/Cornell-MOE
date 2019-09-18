@@ -209,3 +209,40 @@ class Ackley(object):
             n = numpy.random.normal(0, numpy.sqrt(self._sample_var))
             results += [r + n]
         return numpy.array(results)
+
+
+class Ackley20(object):
+    def __init__(self):
+        self._dim = 20
+        self._search_domain = numpy.repeat([[-1., 1.]], self._dim, axis=0)
+        self._num_init_pts = 3
+        self._sample_var = 0.0
+        self._min_value = 0.0
+        self._observations = []
+        self._num_fidelity = 0
+
+    def evaluate_true(self, x):
+        x = 20 * x
+        firstSum = 0.0
+        secondSum = 0.0
+        for c in x:
+            firstSum += c ** 2.0
+            secondSum += math.cos(2.0 * math.pi * c)
+        n = float(len(x))
+        results = [old_div(
+            (-20.0 * math.exp(-0.2 * math.sqrt(old_div(firstSum, n))) - math.exp(old_div(secondSum, n)) + 20 + math.e),
+            6.)]
+        for i in range(int(n)):
+            results += [-20.0 * math.exp(-0.2 * math.sqrt(old_div(firstSum, n))) * (
+                        -0.2 * (old_div(x[i], n)) / (math.sqrt(old_div(firstSum, n)))) -
+                        math.exp(old_div(secondSum, n)) * (2.0 * math.pi / n) * (-math.sin(2.0 * math.pi * x[i]))]
+
+        return numpy.array(results)
+
+    def evaluate(self, x):
+        t = self.evaluate_true(x)
+        results = []
+        for r in t:
+            n = numpy.random.normal(0, numpy.sqrt(self._sample_var))
+            results += [r + n]
+        return numpy.array(results)
